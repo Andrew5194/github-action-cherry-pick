@@ -37,8 +37,7 @@ if [[ $MESSAGE -gt 0 ]]; then
 fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
-PR_NUMBER="${PR_TITLE#*#}"    # Remove everything before the '#' character
-PR_NUMBER="${PR_NUMBER%% *}"  # Remove everything after the first space character
+PR_NUMBER=$(echo "$PR_TITLE" | sed 's/.*#\([0-9]\{1,\}\).*/\1/')
 
 if [ -n "$PR_NUMBER" ]; then
   echo "PR number found. Creating cherry pick PR."
