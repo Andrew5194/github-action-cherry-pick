@@ -27,6 +27,8 @@ git_cmd() {
   fi
 }
 
+git_setup
+
 PR_BRANCH="auto-$INPUT_PR_BRANCH-$GITHUB_SHA"
 MESSAGE=$(git log -1 $GITHUB_SHA | grep "AUTO" | wc -l)
 
@@ -37,7 +39,6 @@ fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
 
-git_setup
 git_cmd git remote update
 git_cmd git fetch --all
 git_cmd git checkout -b "${PR_BRANCH}" origin/"${INPUT_PR_BRANCH}"
