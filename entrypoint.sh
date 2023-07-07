@@ -38,10 +38,8 @@ if [[ $MESSAGE -gt 0 ]]; then
 fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
-echo $PR_TITLE
 pr_number="${PR_TITLE#*#}"    # Remove everything before the '#' character
 pr_number="${pr_number%% *}"  # Remove everything after the first space character
-echo "PR Number: $pr_number"
 
 git_cmd git remote update
 git_cmd git fetch --all
