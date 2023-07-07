@@ -1,7 +1,5 @@
 #!/bin/sh -l
 
-set -x
-
 git_setup() {
   cat <<- EOF > $HOME/.netrc
 		machine github.com
@@ -38,12 +36,12 @@ if [[ $MESSAGE -gt 0 ]]; then
 fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
-pr_number="${PR_TITLE#*#}"    # Remove everything before the '#' character
-pr_number="${pr_number%% *}"  # Remove everything after the first space character
+PR_NUMBER="${PR_TITLE#*#}"    # Remove everything before the '#' character
+PR_NUMBER="${PR_NUMBER%% *}"  # Remove everything after the first space character
 
 git_cmd git remote update
 git_cmd git fetch --all
 git_cmd git checkout -b "${PR_BRANCH}" origin/"${INPUT_PR_BRANCH}"
-git_cmd gh pr diff --patch $pr_number | git am
+git_cmd gh pr diff --patch $PR_NUMBER | git am
 git_cmd git push -u origin "${PR_BRANCH}"
 git_cmd hub pull-request -b "${INPUT_PR_BRANCH}" -h "${PR_BRANCH}" -l "${INPUT_PR_LABELS}" -a "${GITHUB_ACTOR}" -m "\"AUTO: ${PR_TITLE}\""
