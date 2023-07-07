@@ -38,6 +38,9 @@ if [[ $MESSAGE -gt 0 ]]; then
 fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
+REGEX="#([0-9]+)"
+[[ $PR_TITLE =~ $REGEX ]] && PR_NUMBER=${BASH_REMATCH[1]}
+echo $PR_NUMBER
 
 git_cmd git remote update
 git_cmd git fetch --all
