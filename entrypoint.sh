@@ -37,7 +37,10 @@ if [[ $MESSAGE -gt 0 ]]; then
 fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
-PR_NUMBER=$(echo "$PR_TITLE" | sed 's/.*#\([0-9]\{1,\}\).*/\1/')
+
+if expr index "$PR_TITLE" "#" > /dev/null; then
+  PR_NUMBER=$(echo "$PR_TITLE" | sed 's/.*#\([0-9]\{1,\}\).*/\1/')
+fi
 
 if [ -n "$PR_NUMBER" ]; then
   echo "PR number found. Creating cherry pick PR."
