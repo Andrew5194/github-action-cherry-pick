@@ -38,9 +38,14 @@ if [[ $MESSAGE -gt 0 ]]; then
 fi
 
 PR_TITLE=$(git log -1 --format="%s" $GITHUB_SHA)
-REGEX="#([0-9]+)"
-[[ $PR_TITLE =~ $REGEX ]] && PR_NUMBER=${BASH_REMATCH[1]}
-echo $PR_NUMBER
+echo $PR_TITLE
+regex='Merge pull request #([0-9]+)'
+if [[ $PR_TITLE =~ $regex ]]; then
+  pr_number="${BASH_REMATCH[1]}"
+  echo "PR Number: $pr_number"
+else
+  echo "PR Number not found"
+fi
 
 git_cmd git remote update
 git_cmd git fetch --all
